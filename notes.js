@@ -1,11 +1,29 @@
 console.log('Starting notes.js');
+const fs = require('fs');
 
 var addNote = (title, body) => {
-console.log('Adding note', title, body);
+  var notes = []
+  var note = {
+    title,
+    body
+  };
+
+  try {
+    var noteString = fs.readFileSync('./playground/notes.json');
+    notes = JSON.parse(noteString);
+
+  } catch (e) {
+
+  }
+  var duplicateNotes = notes.filter((note) => note.title === title);
+  if (duplicateNotes.length === 0) {
+    notes.push(note);
+    fs.writeFileSync('./playground/notes.json', JSON.stringify(notes));
+  }
 };
 
 var getAll = () => {
-console.log('getting all notes');
+  console.log('getting all notes');
 };
 
 var getNote = (title) => {
@@ -13,7 +31,7 @@ var getNote = (title) => {
 };
 
 var removeNote = (title) => {
-console.log('removing  note', title);
+  console.log('removing  note', title);
 };
 
 module.exports = {
